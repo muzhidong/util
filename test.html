@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>测试</title>
+		<meta name="viewport"
+					content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				padding: 1.4rem;
+			}
+
+			li {
+				list-style: none;
+			}
+
+			h1 {
+				margin-bottom: 2rem;
+			}
+
+			ul {
+				font-size: 1.4rem;
+			}
+
+			li {
+				line-height: 1.5;
+			}
+
+			li b.false {
+				color: red;
+			}
+
+			li b.true {
+				color: #4faa33;
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<h1>DEVICE.JS</h1>
+		<ul>
+		</ul>
+		<script type="text/javascript"
+						src="./dist/device.min.js"></script>
+		<script type="text/javascript">
+			// 蓝莓和诺基亚老手机检测不出来
+			var html = [];
+			for (var i in window.device) {
+				html.push("<li>" + i + ": <b class=" + window.device[i] + ">" + window.device[i] + "</b></li>");
+			}
+			var $ = document.querySelector.bind(document);
+			var ul = $("ul");
+			ul.innerHTML = html.join("");
+
+		</script>
+
+
+		<h1>汉字转拼音</h1>
+		<p id="pinyin"></p>
+		<textarea id="content"></textarea>
+		<script src="./dist/hanzi2pinyin.min.js"></script>
+		<script>
+			window.addEventListener('load', function() {
+
+				var pinyin = document.querySelector('#pinyin');
+				var text = document.querySelector('#content');
+
+				text.addEventListener('change', function(e) {
+					pinyin.innerHTML = hanzi2pinyin(e.target.value);
+				});
+
+			})
+
+		</script>
+
+		<h1>导出文件</h1>
+		<button id="downloadBtn">导出文件</button>
+		<script src="./dist/exportFile.min.js"></script>
+		<script>
+			const downloadBtn = document.querySelector("#downloadBtn");
+			downloadBtn.addEventListener("click", (event) => {
+				const fileName = "blob.txt";
+				const myBlob = new Blob(["一文彻底掌握 Blob Web API"], {
+					type: "text/plain"
+				});
+				exportFile(fileName, myBlob);
+			});
+
+		</script>
+
+		<script src="./dist/array.min.js"></script>
+		<script src="./dist/c_util.min.js"></script>
+		<script>
+			console.log([1, 1, 12, 3, 344, 55, 44, 344, 55, 44].unique());
+
+			console.log(isPromise(new Promise((resolve, reject) => {
+				resolve(1)
+			})));
+			console.log(isPromise({}));
+
+			let fnArr = [async function(next) {
+					await next();
+					console.log(1);
+				},
+				async function(next) {
+					await next();
+					// 异步
+					setTimeout(() => {
+						console.log(2)
+					}, 2000);
+				}, async function(next) {
+						await next();
+						// 同步
+						let res = await new Promise((resolve, reject) => {
+							setTimeout(function() {
+								resolve(3);
+							}, 1000)
+						})
+						console.log(res);
+					},
+					async function(next) {
+						await next();
+						console.log(4);
+					}];
+			composeAsync(fnArr)() // 4312
+
+			let fnArr1 = [function() {
+					return 1;
+				},
+				function(param) {
+					console.log(param);
+					setTimeout(() => {
+						console.log(2)
+					}, 2000);
+				},
+				async function() {
+						let res = await new Promise((resolve, reject) => {
+							setTimeout(function() {
+								resolve(3);
+							}, 1000)
+						})
+						console.log(res);
+					},
+					function() {
+						console.log(4);
+					}
+			];
+			// compose(fnArr1)() // 1432
+
+		</script>
+
+		<script src="./dist/querystring.min.js"></script>
+		<script>
+			let jsonObj = {
+				a: 1,
+				b: 'false',
+				c: true,
+				d: null,
+				e: undefined,
+				f: [1, 23, 4, 5, 6, 78],
+				g: {
+					attr: 'attr',
+					func: function() {
+						console.log('Hello')
+					}
+				},
+				h: '11222',
+				i: 'null',
+				j: 'undefined',
+			}
+			console.log(jsonObj);
+			jsonObj = toSafeQueryString(jsonObj);
+			console.log(jsonObj);
+			jsonObj = parseSafeQueryString(jsonObj);
+			console.log(jsonObj);
+
+		</script>
+
+		<script src="./dist/getFirstLetterOfChinese.min.js"></script>
+		<script>
+			console.log(getFirstLetterOfChinese('中华人民共和国-我爱我国'));
+
+		</script>
+
+		<script>
+			var result = compose2(async function(val) {
+				console.log('2....'); //第2处
+				var value = (isPromise(val) && (await val)) || val;
+				setTimeout(function() {
+					console.log('compose1', value + 1); //第6处
+				}, 2000)
+			}, async function(val) {
+					let res = await new Promise((resolve, reject) => {
+						setTimeout(function() {
+							console.log('compose2', val + 1); //第4处
+							resolve(val + 1);
+						}, 3000)
+					})
+					console.log('1....'); //第5处
+					return res;
+				},
+				function(val) {
+					console.log('compose3', val + 1); // 第1处
+					return val + 1;
+				}, )(4);
+			console.log(result); //第3处，是一个Promise，因为第一个是同步函数，返回的是Promise
+			// compose3 5
+			// 2....
+			// Promise {<pending>}
+			// compose2 6
+			// 1....
+			// compose1 7
+
+		</script>
+	</body>
+
+</html>
