@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "minify": "uglifyjs $FILE_PATH/$FILE_NAME.js -m -c -o ./dist/$FILE_NAME.min.js",
+    "minify": "uglifyjs ./src/$FILE_DIR/$FILE_NAME.js -m -c -o ./build/$FILE_NAME.min.js",
     "help": "uglifyjs -h"
   },
   "keywords": [],
