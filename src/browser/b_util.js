@@ -202,4 +202,4 @@
 
   context.tool = new tool();
 
-})(this);
+})(window);

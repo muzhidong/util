@@ -60,4 +60,4 @@
 
   context.device = device;
 
-})(this);
+})(window);

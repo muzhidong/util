@@ -14,4 +14,4 @@
 
   context.exportFile = exportFile;
 
-})(this);
+})(window);

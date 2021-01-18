@@ -45,4 +45,4 @@
 
   context.compress = compress;
 
-})(this);
+})(window);
