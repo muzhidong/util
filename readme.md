@@ -14,3 +14,5 @@
 	在build文件夹会生成device.min.js文件。
 
 - test文件夹用于存放编写单元测试
+
+- TODO:doc文件夹用于存放说明文档
