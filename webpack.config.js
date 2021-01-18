@@ -90,7 +90,7 @@ module.exports = (env, args) => {
       entry: generateEntry(src),
       output: {
         path: path.join(__dirname, 'build'),
-        filename: '[name]-min.js',
+        filename: '[name].min.js',
       }
     };
   } else {
