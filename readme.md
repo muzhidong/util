@@ -5,14 +5,20 @@
 
 - build文件夹存放打包好的工具函数
 
-	比如压缩./browser/device.js文件，可执行如下命令，
+	执行如下命令，
 
 	```bash
-	FILES='hanzi2pinyin,querystring,time,util' npm run build
+	npm run build
 	```
 
-	在build文件夹会生成device.min.js文件。
+  也可以指定需要的工具函数，如打包common文件夹下util、querystring两个文件，
+
+  ```base
+  FILES=util,querystring npm run build
+  ```
+
+	在build文件夹会生成XXX.min.js文件，XXX表示当前时间，精确到秒。
 
 - test文件夹用于存放编写单元测试
 
-- TODO:doc文件夹用于存放说明文档
+- doc文件夹用于存放说明文档（功能暂未实现）
