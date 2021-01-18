@@ -1,6 +1,6 @@
-(function() {
+(function(context) {
 
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || context !== window) return;
 
   var WIN = window;
   var LOC = WIN["location"];
@@ -58,6 +58,6 @@
     }
   }
 
-  window.device = device;
+  context.device = device;
 
-}).call(this);
+})(this);
