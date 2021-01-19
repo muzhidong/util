@@ -1,4 +1,4 @@
-(function(context) {
+(function() {
 
   var time = Object.create(null);
 
@@ -82,12 +82,14 @@
     define(function() {
       return time;
     });
-  } else if (typeof module !== 'undefined' && module.exports) {
+  }
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = time;
-  } else {
+  }
+  if (typeof window !== 'undefined' && window === this) {
     for (let key in time) {
-      context[key] = time[key];
+      window[key] = time[key];
     }
   }
 
-})(this)
+})()
