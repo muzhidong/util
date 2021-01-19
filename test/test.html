@@ -59,6 +59,7 @@
       var $ = document.querySelector.bind(document);
       var ul = $("ul");
       ul.innerHTML = html.join("");
+
     </script>
 
 
@@ -74,14 +75,16 @@
         });
         exportFile(fileName, myBlob);
       });
+
     </script>
 
 
     <h1>文件压缩</h1>
     <input id="upload"
-          type="file" />
-    <br/>
-    <img id="result"  style="width:100px;height:100px;"/>
+           type="file" />
+    <br />
+    <img id="result"
+         style="width:100px;height:100px;" />
     <script src="../build/compress.min.js"></script>
     <script>
       function blobToB64(blob, cb) {
@@ -93,18 +96,18 @@
           type: blob.type
         });
       }
- 
+
       let inputEle = document.querySelector('#upload');
       let imgEle = document.querySelector("#result");
       inputEle.addEventListener('change', function() {
         var file = this.files.item(0);
         blobToB64(file, async function(b64) {
-          console.log('before:',b64.length);
+          console.log('before:', b64.length);
           imgEle.src = await compress(b64, 0.5, 'image/png');
-          console.log('after',imgEle.src.length);
+          console.log('after', imgEle.src.length);
         })
       })
-      
+
     </script>
 
     <script src="../build/b_util.min.js"></script>
@@ -131,6 +134,7 @@
         });
 
       })
+
     </script>
 
     <script src="../build/array.min.js"></script>
