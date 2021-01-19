@@ -171,7 +171,7 @@
             await next();
             console.log(4);
           }];
-      composeAsync(fnArr)() // 4312
+      // composeAsync(fnArr)() // 4312
 
       let fnArr1 = [function() {
           return 1;
@@ -194,7 +194,7 @@
             console.log(4);
           }
       ];
-      // compose(fnArr1)() // 1432
+      compose(fnArr1)() // 1432
 
     </script>
 
