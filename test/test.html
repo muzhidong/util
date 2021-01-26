@@ -195,30 +195,30 @@
             await next();
             console.log(4);
           }];
-      // composeAsync(fnArr)() // 4312
+      composeAsync(fnArr)() // 4312
 
       let fnArr1 = [function() {
-          return 1;
+          return 5;
         },
         function(param) {
           console.log(param);
           setTimeout(() => {
-            console.log(2)
+            console.log(6)
           }, 2000);
         },
         async function() {
             let res = await new Promise((resolve, reject) => {
               setTimeout(function() {
-                resolve(3);
+                resolve(7);
               }, 1000)
             })
             console.log(res);
           },
           function() {
-            console.log(4);
+            console.log(8);
           }
       ];
-      compose(fnArr1)() // 1432
+      compose(fnArr1)() // 5876
 
       var result = compose2(async function(val) {
         console.log('2....'); //第2处
