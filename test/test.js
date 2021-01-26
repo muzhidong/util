@@ -1,3 +1,6 @@
+require("../build/array.min.js");
+console.log([1, 1, 12, 3, 344, 55, 44, 344, 55, 44].unique());
+
 let {
   generateUUID
 } = require('../build/util.min.js');
