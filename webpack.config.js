@@ -8,7 +8,11 @@ const {
 } = require('clean-webpack-plugin');
 
 // 源代码路径
-let src = `${__dirname}/src`;
+const src = `${__dirname}/src`;
+
+// 文件后缀正则
+const suffix = /\.(m)?js$/;
+
 
 function getFileInfo(path) {
 
@@ -16,7 +20,7 @@ function getFileInfo(path) {
 
   // 文件名作为键，相对于配置文件的相对路径作为值
   let key = path.split('/');
-  key = key[key.length - 1].replace('.js', '');
+  key = key[key.length - 1].replace(suffix, '');
   let val = path.replace(__dirname, '.');
 
   return {
@@ -34,7 +38,7 @@ function generateEntry(path) {
     let p = `${path}/${item}`;
     stat = fs.statSync(p);
     if (stat.isFile()) {
-      p.endsWith('.js') && Object.assign(fileInfo, getFileInfo(p));
+      (p.endsWith('.mjs') || p.endsWith('.js')) && Object.assign(fileInfo, getFileInfo(p));
     } else {
       Object.assign(fileInfo, generateEntry(p));
     }
@@ -59,7 +63,7 @@ function getRelativePath(path, name) {
     p = `${path}/${item}`;
     stat = fs.statSync(p);
     if (stat.isFile()) {
-      if (p.endsWith('.js')) {
+      if ((p.endsWith('.mjs') || p.endsWith('.js'))) {
         fileInfo = getFileInfo(p);
         // console.log(fileInfo, name, fileInfo[name]);
         if (fileInfo[name])
@@ -112,7 +116,7 @@ module.exports = (env, args) => {
     ...options,
     module: {
       rules: [{
-        test: /\.js$/,
+        test: suffix,
         use: {
           loader: 'babel-loader',
         },

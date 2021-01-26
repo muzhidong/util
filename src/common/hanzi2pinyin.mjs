@@ -30,7 +30,15 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = hanzi2pinyin;
   }
-  if (typeof window !== 'undefined' && window === this) {
+
+  function isWindow() {
+    let b1 = 'undefined' !== typeof window && window === window.window;
+    if (!b1) return b1;
+    let b2 = window === window.frames && window === window.self;
+    let b3 = window === window.parent && window === window.top;
+    return b1 && b2 && b3;
+  }
+  if (isWindow()) {
     window['hanzi2pinyin'] = hanzi2pinyin;
   }
 

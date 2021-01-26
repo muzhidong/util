@@ -95,7 +95,7 @@
   // 异步非阻塞组合函数。特点：上个中间件输出作为下个中间件输入
   util.compose = function(middleWares) {
     return function() {
-      [first, ...others] = middleWares
+      let [first, ...others] = middleWares
       let ret = first()
       others.forEach(fn => {
         ret = fn(ret)
@@ -149,7 +149,15 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = util;
   }
-  if (typeof window !== 'undefined' && window === this) {
+
+  function isWindow() {
+    let b1 = 'undefined' !== typeof window && window === window.window;
+    if (!b1) return b1;
+    let b2 = window === window.frames && window === window.self;
+    let b3 = window === window.parent && window === window.top;
+    return b1 && b2 && b3;
+  }
+  if (isWindow()) {
     for (let key in util) {
       window[key] = util[key];
     }

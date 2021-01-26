@@ -67,7 +67,6 @@
 
   if (typeof define === 'function') {
     // AMD\CMD模块设计，比如babel编译器环境
-    console.log('define....')
     define(function() {
       return {
         toSafeQueryString,
@@ -76,19 +75,24 @@
     });
   }
 
-  // FIXME:require不到module.exports的导出内容
   if (typeof module !== 'undefined' && module.exports) {
     // CommonJS模块设计，比如node环境
-    console.log('module....');
     module.exports = {
       toSafeQueryString,
       parseSafeQueryString,
     };
   }
 
-  if (typeof window !== 'undefined' && window === this) {
+  function isWindow() {
+    let b1 = 'undefined' !== typeof window && window === window.window;
+    if (!b1) return b1;
+    let b2 = window === window.frames && window === window.self;
+    let b3 = window === window.parent && window === window.top;
+    return b1 && b2 && b3;
+  }
+
+  if (isWindow()) {
     // 浏览器环境
-    console.log('window....');
     window.parseSafeQueryString = parseSafeQueryString;
     window.toSafeQueryString = toSafeQueryString;
   }
