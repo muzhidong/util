@@ -35,7 +35,7 @@
         ctx.clearRect(0, 0, targetWidth, targetHeight); // 清除画布
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        let imageData = canvas.toDataURL(mimeType, quality / 100);
+        let imageData = canvas.toDataURL(mimeType, quality);
         resolve(imageData);
       };
 

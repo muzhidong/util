@@ -67,13 +67,35 @@
     <button id="downloadBtn">导出文件</button>
     <script src="../build/exportFile.min.js"></script>
     <script>
+      function b64ToBlob(base64, filename) {
+
+        var arr = base64.split(',');
+
+        var mime = arr[0].match(/:(.*?);/)[1];
+
+        var binaryStr = atob(arr[1]);
+        var i = binaryStr.length;
+        var u8arr = new Uint8Array(i);
+        while (i--) {
+          u8arr[i] = binaryStr.charCodeAt(i);
+        }
+
+        if (filename) {
+          return new File([u8arr], filename, {
+            type: mime
+          });
+        } else {
+          return new Blob([u8arr], {
+            type: mime
+          })
+        }
+
+      }
+
       const downloadBtn = document.querySelector("#downloadBtn");
       downloadBtn.addEventListener("click", (event) => {
-        const fileName = "blob.txt";
-        const myBlob = new Blob(["一文彻底掌握 Blob Web API"], {
-          type: "text/plain"
-        });
-        exportFile(fileName, myBlob);
+        const myBlob = b64ToBlob(imgEle.src);
+        exportFile(`compressed-${imgEle.name}`, myBlob);
       });
 
     </script>
@@ -102,9 +124,8 @@
       inputEle.addEventListener('change', function() {
         var file = this.files.item(0);
         blobToB64(file, async function(b64) {
-          console.log('before:', b64.length);
-          imgEle.src = await compress(b64, 0.5, 'image/png');
-          console.log('after', imgEle.src.length);
+          imgEle.src = await compress(b64, 0.5, file.type);
+          imgEle.name = file.name;
         })
       })
 
@@ -138,10 +159,13 @@
     </script>
 
     <script src="../build/array.min.js"></script>
-    <script src="../build/util.min.js"></script>
     <script>
       console.log([1, 1, 12, 3, 344, 55, 44, 344, 55, 44].unique());
 
+    </script>
+
+    <script src="../build/util.min.js"></script>
+    <script>
       console.log(isPromise(new Promise((resolve, reject) => {
         resolve(1)
       })));
@@ -196,36 +220,6 @@
       ];
       compose(fnArr1)() // 1432
 
-    </script>
-
-    <script src="../build/querystring.min.js"></script>
-    <script>
-      let jsonObj = {
-        a: 1,
-        b: 'false',
-        c: true,
-        d: null,
-        e: undefined,
-        f: [1, 23, 4, 5, 6, 78],
-        g: {
-          attr: 'attr',
-          func: function() {
-            console.log('Hello')
-          }
-        },
-        h: '11222',
-        i: 'null',
-        j: 'undefined',
-      }
-      console.log(jsonObj);
-      jsonObj = toSafeQueryString(jsonObj);
-      console.log(jsonObj);
-      jsonObj = parseSafeQueryString(jsonObj);
-      console.log(jsonObj);
-
-    </script>
-
-    <script>
       var result = compose2(async function(val) {
         console.log('2....'); //第2处
         var value = (isPromise(val) && (await val)) || val;
@@ -253,6 +247,33 @@
       // compose2 6
       // 1....
       // compose1 7
+
+    </script>
+
+    <script src="../build/querystring.min.js"></script>
+    <script>
+      let jsonObj = {
+        a: 1,
+        b: 'false',
+        c: true,
+        d: null,
+        e: undefined,
+        f: [1, 23, 4, 5, 6, 78],
+        g: {
+          attr: 'attr',
+          func: function() {
+            console.log('Hello')
+          }
+        },
+        h: '11222',
+        i: 'null',
+        j: 'undefined',
+      }
+      console.log(jsonObj);
+      jsonObj = toSafeQueryString(jsonObj);
+      console.log(jsonObj);
+      jsonObj = parseSafeQueryString(jsonObj);
+      console.log(jsonObj);
 
     </script>
   </body>
