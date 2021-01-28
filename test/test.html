@@ -166,10 +166,10 @@
 
     <script src="../build/util.min.js"></script>
     <script>
-      console.log(isPromise(new Promise((resolve, reject) => {
+      console.log(isPromiseLike(new Promise((resolve, reject) => {
         resolve(1)
       })));
-      console.log(isPromise({}));
+      console.log(isPromiseLike({}));
 
       let fnArr = [async function(next) {
           await next();
@@ -222,7 +222,7 @@
 
       var result = compose2(async function(val) {
         console.log('2....'); //第2处
-        var value = (isPromise(val) && (await val)) || val;
+        var value = (isPromiseLike(val) && (await val)) || val;
         setTimeout(function() {
           console.log('compose1', value + 1); //第6处
         }, 2000)

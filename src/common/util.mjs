@@ -114,7 +114,7 @@
   }
 
   // 是否是类Promise
-  util.isPromise = function(obj) {
+  util.isPromiseLike = function(obj) {
     return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
   }
 
