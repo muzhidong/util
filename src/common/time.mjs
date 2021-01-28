@@ -87,14 +87,10 @@
     module.exports = time;
   }
 
-  function isWindow() {
-    let b1 = 'undefined' !== typeof window && window === window.window;
-    if (!b1) return b1;
-    let b2 = window === window.frames && window === window.self;
-    let b3 = window === window.parent && window === window.top;
-    return b1 && b2 && b3;
+  function isInWindow() {
+    return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
-  if (isWindow()) {
+  if (isInWindow()) {
     for (let key in time) {
       window[key] = time[key];
     }
