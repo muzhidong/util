@@ -165,6 +165,8 @@
     </script>
 
     <script src="../build/util.min.js"></script>
+    <script src="../build/compose.min.js"></script>
+    <script src="../build/checkType.min.js"></script>
     <script>
       console.log(isPromiseLike(new Promise((resolve, reject) => {
         resolve(1)
@@ -220,11 +222,11 @@
       ];
       compose(fnArr1)() // 5876
 
-      var result = compose2(async function(val) {
-        console.log('2....'); //第2处
+      let fnArr2 = [async function(val) {
+        console.log('2....'); //第1处
         var value = (isPromiseLike(val) && (await val)) || val;
         setTimeout(function() {
-          console.log('compose1', value + 1); //第6处
+          console.log('compose1', value + 1); //第3处
         }, 2000)
       }, async function(val) {
           let res = await new Promise((resolve, reject) => {
@@ -237,16 +239,10 @@
           return res;
         },
         function(val) {
-          console.log('compose3', val + 1); // 第1处
+          console.log('compose3', val + 1); // 第2处
           return val + 1;
-        }, )(4);
-      console.log(result); //第3处，是一个Promise，因为第一个是同步函数，返回的是Promise
-      // compose3 5
-      // 2....
-      // Promise {<pending>}
-      // compose2 6
-      // 1....
-      // compose1 7
+        }]
+      compose(fnArr2)(4);
 
     </script>
 

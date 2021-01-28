@@ -33,7 +33,3 @@ jsonObj = toSafeQueryString(jsonObj);
 console.log(jsonObj);
 jsonObj = parseSafeQueryString(jsonObj);
 console.log(jsonObj);
-
-require('../build/array.min.js');
-let arr = [1, 11, 2, 33, 33, 33, 44].unique();
-console.log(arr);
