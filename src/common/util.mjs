@@ -4,31 +4,28 @@
 
   // 获取随机颜色
   util.getRandomColor = function() {
-    var arr = "0123456789ABCDEF";
-    var color = "#";
+    var chs = "0123456789ABCDEF";
+    var col = "#";
     for (var i = 0; i < 6; i++) {
-      color += arr[Math.floor(Math.random() * 16)];
+      col += chs[Math.random() * 16 | 0];
     }
-    return color;
+    return col;
   };
 
-  // 指定范围内获取随机数
+  // 指定范围内获取随机整数
   util.getRandomNumber = function(value) {
-    return parseInt(Math.random() * value);
+    var type = toString.call(value);
+    if (!(type === '[object Number]' || (type === '[object String]' && parseFloat(value) == value))) return null;
+    return parseInt(Math.random() * value, 10);
   };
 
   // 获取字符的16进制编码
   util.getHexCode = function(str) {
-    if (str === null || str.length === 0) {
-      return null;
-    } else if (str.length > 1) {
-      console.log("请输入一个字符");
-      return null;
-    }
+    if (!(toString.call(str) === "[object String]" && str.length > 0)) return null;
     return str.charCodeAt(0).toString(16);
   };
 
-  // 获取占位长度
+  // 获取字符串的占位长度
   util.getLengthOfHolder = function(str) {
 
     //字符串长度
@@ -68,9 +65,68 @@
 
   };
 
-  // 类Promise判断
+  util.isNaN = function(val) {
+    return val !== val;
+  }
+
+  util.isUndefined = function(value) {
+    // return value === void 0;
+    return toString.call(value) === '[object Undefined]';
+  };
+
+  util.isNull = function(value) {
+    // return value === null;
+    return toString.call(value) === '[object Null]';
+  };
+
+  util.isBoolean = function(value) {
+    // 前者视布尔包装类为对象类型，后者仍视为布尔类型，一般开发中倾向后者
+    // return typeof value === 'boolean';
+    return toString.call(value) === '[object Boolean]';
+  };
+
+  util.isNumeric = function(value) {
+    // return typeof value === 'number';
+    // return toString.call(value) === '[object Number]';
+    // 相比上面一种，支持数字字符串
+    return value - parseFloat(value) >= 0;
+  };
+
+  util.isString = function(value) {
+    // return typeof value === 'string';
+    return toString.call(value) === '[object String]';
+  };
+
+  util.isFunction = function(value) {
+    // return typeof value === 'function';
+    // return value instanceof Function;
+    return toString.call(value) === '[object Function]';
+  };
+
+  util.isArray = function(value) {
+    // return value instanceof Array;
+    return toString.call(value) === '[object Array]';
+  }
+
+  util.isObject = function(value) {
+    // return value instanceof Object;
+    return toString.call(value) === '[object Object]';
+  }
+
+  // 是否是类Promise
   util.isPromise = function(obj) {
     return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+  }
+
+  // 是否处于window环境
+  function isInWindow() {
+    return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
+  }
+
+  // 是否为纯对象
+  util.isPlainObject = function(value) {
+    // 排除基本类型数据、JS内置对象、DOM节点对象、window对象、处于某原型链中的对象
+    return toString.call(value) === '[object Object]' && Object.getPrototypeOf(value) === Object.prototype;
   }
 
   // 同步阻塞组合函数。特点：若有下一中间件，则执行完再执行当前中间件
@@ -123,23 +179,6 @@
 
   }
 
-  // TODO:是否为纯对象，下面的判断依据是什么？有没有更通用的解决方案
-  util.isPlainObject = function(obj) {
-
-    if (!obj || obj.toString() !== "[object Object]" || obj.nodeType || obj.setInterval) {
-      return false;
-    }
-
-    if (obj.constructor && !obj.hasOwnProperty("constructor") && !obj.constructor.prototype.hasOwnProperty("isPrototypeOf")) {
-      return false;
-    }
-
-    for (var key in obj) {}
-
-    return key === undefined || obj.hasOwnProperty(key);
-
-  }
-
 
   if (typeof define === 'function') {
     define(function() {
@@ -149,15 +188,7 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = util;
   }
-
-  function isWindow() {
-    let b1 = 'undefined' !== typeof window && window === window.window;
-    if (!b1) return b1;
-    let b2 = window === window.frames && window === window.self;
-    let b3 = window === window.parent && window === window.top;
-    return b1 && b2 && b3;
-  }
-  if (isWindow()) {
+  if (isInWindow()) {
     for (let key in util) {
       window[key] = util[key];
     }
