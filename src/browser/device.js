@@ -1,6 +1,6 @@
 (function(context) {
 
-  if (typeof window === 'undefined' || context !== window) return;
+  if (!(/^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(context)))) return;
 
   var WIN = window;
   var LOC = WIN["location"];

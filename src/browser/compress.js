@@ -1,6 +1,6 @@
 (function(context) {
 
-  if (typeof window === 'undefined' || context !== window) return;
+  if (!(/^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(context)))) return;
 
   // 图片压缩
   const MAX_WIDTH = 800; // 图片最大宽度

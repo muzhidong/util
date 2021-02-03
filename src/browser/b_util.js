@@ -5,8 +5,8 @@
 
   "use strict";
 
-  function isBrowser() {
-    return typeof window !== 'undefined' && context === window;
+  function isWindow(obj) {
+    return /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(obj));
   }
 
   var tool = function() {};
@@ -115,7 +115,7 @@
     //获取浏览器类型
     getBrowserType: function() {
 
-      if (!isBrowser()) return;
+      if (!isWindow(context)) return;
 
       var userAgent = context.navigator.userAgent;
 
@@ -144,7 +144,7 @@
     //获取浏览器版本
     getBrowserVersion: function() {
 
-      if (!isBrowser()) return;
+      if (!isWindow(context)) return;
 
       var userAgent = context.navigator.userAgent;
 

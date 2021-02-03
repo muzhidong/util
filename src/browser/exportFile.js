@@ -1,7 +1,7 @@
 // 文件导出
 (function(context) {
 
-  if (typeof window === 'undefined' || context !== window) return;
+  if (!(/^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(context)))) return;
 
   const exportFile = function(fileName, blob) {
     const link = document.createElement("a");
