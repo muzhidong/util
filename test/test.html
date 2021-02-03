@@ -272,6 +272,37 @@
       console.log(jsonObj);
 
     </script>
+
+    <h1>节流防抖</h1>
+    <input id="debounce"
+           placeholder="防抖测试" />
+    <input id="throttle"
+           placeholder="节流测试" />
+    <script src="../build/debounce.min.js"></script>
+    <script src='../build/throttle.min.js'></script>
+    <script>
+      var dInputEle = document.querySelector("#debounce");
+      var tInputEle = document.querySelector("#throttle");
+      var dLastTime;
+      var tLastTime;
+      dInputEle.addEventListener('input', debounce(function(e) {
+        let t = new Date().getTime();
+        if (dLastTime)
+          dLastTime = t - dLastTime;
+        // 时间差是不确定的
+        console.log('防抖', e.target.value, dLastTime);
+        dLastTime = t;
+      }, 500));
+      tInputEle.addEventListener('input', throttle(function(e) {
+        let t = new Date().getTime();
+        if (tLastTime)
+          tLastTime = t - tLastTime;
+        // 时间差是确定的
+        console.log('节流', e.target.value, tLastTime);
+        tLastTime = t;
+      }, 500));
+
+    </script>
   </body>
 
 </html>
