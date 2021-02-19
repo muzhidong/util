@@ -1,0 +1,13 @@
+{
+  "source": {
+    "include": ["src/"],
+    "includePattern": "\\.(mjs|js|ts)$"
+  },
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./doc/",
+    "recurse": true,
+    "verbose": true,
+    "template": "node_modules/docdash"
+  }
+}
