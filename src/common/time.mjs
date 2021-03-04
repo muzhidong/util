@@ -78,6 +78,112 @@
 
   };
 
+  // 获取今天的时间戳
+  time.getTodayTimeStamp = function(now) {
+    let year = now.getFullYear();
+    let month = now.getMonth();
+    let day = now.getDate();
+    return new Date(year, month, day, 0, 0, 0).getTime();
+  },
+
+  // 获取昨天的时间戳
+  time.getYesterDayTimeStamp = function(now) {
+    let year = now.getFullYear();
+    let month = now.getMonth();
+    let day = now.getDate();
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+
+    let yesterday = -1;
+    if (day === 1) {
+      if (month === 0) {
+        yesterday = new Date(year - 1, 11, this.getLastDay(year - 1, 11), hour, minute, second).getTime();
+      } else {
+        yesterday = new Date(year, month - 1, this.getLastDay(year, month - 1), hour, minute, second).getTime();
+      }
+    } else {
+      yesterday = new Date(year, month, day - 1, hour, minute, second).getTime();
+    }
+    return yesterday;
+  },
+
+  // 获取距离现在一周的时间戳
+  time.getLastWeekTimeStamp = function(now) {
+
+    let year = now.getFullYear();
+    let month = now.getMonth();
+    let day = now.getDate();
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+
+    let lastWeek = -1;
+    if (day <= 7) {
+      if (month === 0) {
+        lastWeek = new Date(year - 1, 11, this.getLastDay(year - 1, 11) -
+          (7 - day), hour, minute, second).getTime();
+      } else {
+        lastWeek = new Date(year, month - 1, this.getLastDay(year, month - 1) - (7 - day), hour, minute, second).getTime();
+      }
+    } else {
+      lastWeek = new Date(year, month, day - 7, hour, minute, second).getTime();
+    }
+    return lastWeek;
+  },
+
+  // 星期数字转汉字
+  time.getWeekDay = function(num) {
+    switch (num) {
+      case 0:
+        return "日";
+      case 1:
+        return "一";
+      case 2:
+        return "二";
+      case 3:
+        return "三";
+      case 4:
+        return "四";
+      case 5:
+        return "五";
+      case 6:
+        return "六";
+      default:
+        break;
+    }
+  },
+
+  // 获取某年某月的最后一天是几号
+  time.getLastDay = function(year, month) {
+    // 判断是哪一月
+    // 1，3，5，7，8，10，12  最后一天是31号
+    // 4，6，9，11           最后一天是30号
+    // 2                    若为闰年则29号，若为平年则28号
+    switch (month) {
+      case 0:
+      case 2:
+      case 4:
+      case 6:
+      case 7:
+      case 9:
+      case 11:
+        return 31;
+      case 3:
+      case 5:
+      case 8:
+      case 10:
+        return 30;
+      case 1:
+        return this.isLeapYear(year) ? 29 : 28;
+    }
+  },
+
+  // 判断某年是否是闰年
+  time.isLeapYear = function(year) {
+    return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
+  }
+
   if (typeof define === 'function') {
     define(function() {
       return time;

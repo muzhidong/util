@@ -27,9 +27,7 @@
   var IsPC = !IsAndroid && !IsIOS && !IsWinPhone;
   var IsHTC = IsAndroid && test(/htc\s+/);
   var IsBaiduWallet = test(/baiduwallet/);
-
   var IsDebug = !!~("" + LOC["port"]).indexOf("0");
-
 
   var device = {
     isTouch: IsTouch,
@@ -50,13 +48,6 @@
     isBaiduWallet: IsBaiduWallet,
     isDebug: IsDebug
   };
-
-  var documentElement = WIN.document.documentElement;
-  for (var i in device) {
-    if (device[i]) {
-      documentElement.className += " " + i.replace("Is", "").toLowerCase();
-    }
-  }
 
   context.device = device;
 
