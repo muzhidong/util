@@ -79,7 +79,7 @@
 
     /**
      * @method eq
-     * @description 获获取第N个子元素
+     * @description 获取第N个子元素
      * @param {number} num 要获取的子元素的位置
      * @returns {DOMElement} 指定位置的子元素
      */
