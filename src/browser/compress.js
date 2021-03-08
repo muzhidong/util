@@ -5,6 +5,14 @@
   // 图片压缩
   const MAX_WIDTH = 800; // 图片最大宽度
 
+  /**
+   * @memberof browser
+   * @method compress
+   * @description 压缩图片
+   * @param {string} base64 图片base64格式内容 
+   * @param {number|string} quality 图片质量
+   * @param {string} mimeType 压缩后的图片MIME类型
+   */
   function compress(base64, quality, mimeType) {
 
     let canvas = document.createElement("canvas");
