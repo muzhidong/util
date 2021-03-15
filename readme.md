@@ -23,15 +23,15 @@
 
 执行如下命令，
 
-	```bash
-	npm run build
-	```
+```bash
+npm run build
+```
 
 也可以指定需要的工具函数，如打包common文件夹下util、querystring两个文件，
 
-  ```base
-  FILES=util,querystring npm run build
-  ```
+```bash
+FILES=util,querystring npm run build
+```
 
 在build文件夹会生成XXX.min.js文件，XXX表示当前时间，精确到秒。
 
