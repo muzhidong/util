@@ -24,6 +24,7 @@
     "docdash": "^1.2.0",
     "jest": "^26.6.3",
     "jsdoc": "~3.6.6",
+    "puppeteer": "^8.0.0",
     "uglify-js": "^3.12.1",
     "webpack": "^5.14.0",
     "webpack-cli": "^4.3.1"
