@@ -144,7 +144,7 @@
   // 将数字划分为整数和小数，且四舍五入保留两位小数，自动调整整数和小数
   function toParts(value) {
 
-    var parts = value.split('.');
+    var parts = (value + '').split('.');
 
     if (parts[1]) {
       var len = parts[1].length;
