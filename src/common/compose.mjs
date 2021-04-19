@@ -5,20 +5,32 @@
   // 同步阻塞组合函数。特点：若有下一中间件，则执行完再执行当前中间件
   util.composeAsync = function(middleWares) {
 
+    if (toString.call(middleWares) !== "[object Array]") {
+      throw new TypeError('param middleWares must be an array!');
+    }
+
     middleWares = middleWares.filter(middleWare => typeof middleWare === 'function');
+
     return function() {
+
       return dispatch(0)
 
       function dispatch(i) {
+
         let fn = middleWares[i]
+
         if (!fn) {
           return Promise.resolve()
         }
-        return Promise.resolve(
-          fn(function next() {
+
+        try {
+          return Promise.resolve(fn(function() {
             return dispatch(i + 1)
-          })
-        )
+          }))
+        } catch (e) {
+          return Promise.reject(e);
+        }
+
       }
     }
   }
