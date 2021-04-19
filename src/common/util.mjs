@@ -25,7 +25,117 @@
     return str.charCodeAt(0).toString(16);
   };
 
-  // 获取字符串的占位长度
+  // 按行宽度或行占位长度分割多行文字
+  util.splitMultilineText = function(str, mode, lineWidth, fontSize) {
+
+    var target = [];
+    let lastIdx = 0;
+    var currentIdx = 0;
+    var currentWidthOrLen = 0;
+
+    if (mode === 'pixel') {
+
+      let textSize;
+
+      for (let char of str) {
+
+        if (/[a-zA-Z]/.test(char)) {
+          textSize = 7;
+        } else if (/[0-9]/.test(char)) {
+          textSize = 5.5;
+        } else if (/\./.test(char)) {
+          textSize = 2.7;
+        } else if (/-/.test(char)) {
+          textSize = 3.25;
+        } else if (/[\u4e00-\u9fa5]/.test(char)) {
+          textSize = 10;
+        } else if (/\(|\)/.test(char)) {
+          textSize = 3.73;
+        } else if (/\s/.test(char)) {
+          textSize = 2.5;
+        } else if (/%/.test(char)) {
+          textSize = 8;
+        } else {
+          textSize = 10;
+        }
+
+        currentWidthOrLen += textSize * fontSize / 10;
+
+        if (currentWidthOrLen >= lineWidth) {
+          target.push(str.substring(lastIdx, currentIdx + 1));
+          lastIdx = currentIdx + 1;
+          currentWidthOrLen = 0;
+        }
+        currentIdx++;
+
+      }
+
+    } else if (mode === 'holder') {
+
+      var lineHolderLen = Math.floor(lineWidth / fontSize * 2);
+      var reg = new RegExp(/[\u4E00-\u9FA5]{1}|[\u3000-\u303F]{1}|[\uFF00-\uFFEF]{1}/);
+
+      for (let char of str) {
+
+        if (reg.test(char)) {
+          currentWidthOrLen += 2;
+        } else {
+          currentWidthOrLen += 1;
+        }
+
+        if (currentWidthOrLen >= lineHolderLen) {
+          target.push(str.substring(lastIdx, currentIdx + 1));
+          lastIdx = currentIdx + 1;
+          currentWidthOrLen = 0;
+        }
+        currentIdx++;
+
+      }
+
+    }
+
+    if (lastIdx !== str.length)
+      target.push(str.substring(lastIdx, str.length));
+
+    return target;
+  };
+
+
+  // 测量字符串的像素宽度
+  util.measureText = function(text, fontSize = 10) {
+
+    text = String(text);
+
+    var text = text.split('');
+    var width = 0;
+
+    text.forEach(function(item) {
+      if (/[a-zA-Z]/.test(item)) {
+        width += 7;
+      } else if (/[0-9]/.test(item)) {
+        width += 5.5;
+      } else if (/\./.test(item)) {
+        width += 2.7;
+      } else if (/-/.test(item)) {
+        width += 3.25;
+      } else if (/[\u4e00-\u9fa5]/.test(item)) { //中文匹配
+        width += 10;
+      } else if (/\(|\)/.test(item)) {
+        width += 3.73;
+      } else if (/\s/.test(item)) {
+        width += 2.5;
+      } else if (/%/.test(item)) {
+        width += 8;
+      } else {
+        width += 10;
+      }
+    });
+
+    return width * fontSize / 10;
+
+  };
+
+  // 获取字符串的字符占位长度
   util.getLengthOfHolder = function(str) {
 
     //字符串长度
@@ -46,7 +156,6 @@
     }
 
     //返回占位长度
-    console.log("占位长度", num + len);
     return num + len;
   };
 
