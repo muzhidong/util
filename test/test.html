@@ -40,6 +40,28 @@
         color: #4faa33;
       }
 
+      .canvas {
+        display: block;
+        border: 1px solid red;
+      }
+
+      #clear,
+      #clear1,
+      #save {
+        margin: 0 auto;
+        display: inline-block;
+        padding: 5px 10px;
+        width: 50px;
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #eee;
+        background: #e1e1e1;
+        border-radius: 10px;
+        text-align: center;
+        margin: 20px auto;
+        cursor: pointer;
+      }
+
     </style>
   </head>
 
@@ -303,6 +325,46 @@
       }, 500));
 
     </script>
+
+    <h1>签名版｜写字板（支持移动端）</h1>
+    <canvas id="canvas"
+            class="canvas"
+            width="600"
+            height="600">
+      您的浏览器不支持canvas技术,请升级浏览器!
+    </canvas>
+    <div style="text-align: center">
+      <span id="clear">清空</span>
+      <span id="save">保存</span>
+    </div>
+    <script src="../build/sign.min.js"></script>
+
+    <script type="text/javascript">
+      var sign = new Sign('canvas', {
+        writeWidth: 3,
+        borderWidth: 10,
+        borderColor: '#ff6666',
+
+        // isShowBorder: true,
+        // isSignMode: false,
+        isSignMode: true,
+      });
+
+      document.getElementById('clear').onclick = function() {
+        sign.clearCanvas();
+      };
+
+      document.getElementById('save').onclick = function() {
+        sign.saveAsImg(function(base64) {
+          console.log(base64);
+          var img = new Image();
+          img.src = base64;
+          document.documentElement.appendChild(img);
+        })
+      };
+
+    </script>
+
   </body>
 
 </html>
