@@ -12,8 +12,7 @@
   }
 
   // FIXME:
-  // 1.字符串形如'true','123','null',最后解析为布尔值、数值、null
-  // 2.对象类型不支持携带函数
+  // 1.对象类型不支持携带函数或者属性值为函数
   function toSafeQueryString(obj) {
 
     if (!isObject(obj)) return;
@@ -25,12 +24,20 @@
     let val;
     for (let key in obj) {
       val = obj[key];
-      if (isObject(val) || isArray(val)) {
-        val = encodeURIComponent(JSON.stringify(val));
-      } else if (val === void 0) {
+      if (val === void 0) {
         continue;
       } else {
-        val = encodeURIComponent(val);
+        val = encodeURIComponent(JSON.stringify(val, function(key, value) {
+          switch (true) {
+            case typeof value === 'string' && (value === 'true' || value === 'false'):
+            case typeof value === 'string' && !isNaN(value):
+            case typeof value === 'string' && (value === 'null'):
+              // case typeof value === 'function':
+              return value.valueOf();
+            default:
+              return value;
+          }
+        }));
       }
       qs += key + "=" + val + "&";
     }

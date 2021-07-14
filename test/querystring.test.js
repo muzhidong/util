@@ -5,7 +5,8 @@ let {
 
 describe('查询字符串转换', function() {
 
-  test('toSafeQueryString', () => {
+  test('toSafeQueryString&parseSafeQueryString', () => {
+
     let jsonObj = {
       a: 1,
       b: 'false',
@@ -15,52 +16,39 @@ describe('查询字符串转换', function() {
       f: [1, 23, 4, 5, 6, 78],
       g: {
         attr: 'attr',
-        func: function() {
-          console.log('Hello')
-        }
+        // func: function() {
+        //   console.log('Hello')
+        // }
       },
       h: '11222',
       i: 'null',
       j: 'undefined',
+      // k: function() {
+      //   console.log('Hello')
+      // },
     }
 
-    let expectedValue = `?a=1&b=false&c=true&d=null&f=${encodeURIComponent(JSON.stringify([1, 23, 4, 5, 6, 78]))}&g=${encodeURIComponent(JSON.stringify({attr: 'attr',func: function() {console.log('Hello')}}))}&h=11222&i=null&j=undefined`;
-    expect(toSafeQueryString(jsonObj)).toEqual(expectedValue);
-
-  });
-
-  test('parseSafeQueryString', () => {
-    let jsonObj = {
+    let result = parseSafeQueryString(toSafeQueryString(jsonObj));
+    expect(result).toEqual({
       a: 1,
       b: 'false',
       c: true,
       d: null,
-      e: undefined,
       f: [1, 23, 4, 5, 6, 78],
       g: {
         attr: 'attr',
-        func: function() {
-          console.log('Hello')
-        }
+        // func: function() {
+        //   console.log('Hello')
+        // }
       },
       h: '11222',
       i: 'null',
       j: 'undefined',
-    }
-    let result = toSafeQueryString(jsonObj);
-    expect(parseSafeQueryString(result)).toEqual({
-      a: 1,
-      b: false,
-      c: true,
-      d: null,
-      f: [1, 23, 4, 5, 6, 78],
-      g: {
-        attr: 'attr',
-      },
-      h: 11222,
-      i: null,
-      j: 'undefined',
+      // k: function() {
+      //   console.log('Hello')
+      // },
     });
+
   });
 
 })
