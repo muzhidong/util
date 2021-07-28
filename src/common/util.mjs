@@ -100,7 +100,6 @@
     return target;
   };
 
-
   // 测量字符串的像素宽度
   util.measureText = function(text, fontSize = 10) {
 
@@ -172,6 +171,21 @@
       return v.toString(16);
     });
 
+  };
+
+  // 实现一个函数，判断是否为回文字符串
+  // 回文串是一个正读和反读都一样的字符串，比如“level”或者“noon”等等就是回文串。
+  util.isHuiWen = function(str) {
+    var len = str.length;
+    var loop = (len / 2) >> 0;
+    var i = 0;
+    while (i < loop) {
+      if (str[i] !== str[len - 1 - i]) {
+        return false;
+      }
+      i++;
+    }
+    return true;
   };
 
 
