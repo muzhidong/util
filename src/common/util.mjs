@@ -40,7 +40,7 @@
       for (let char of str) {
 
         if (/[a-zA-Z]/.test(char)) {
-          textSize = 7;
+          textSize = 5;
         } else if (/[0-9]/.test(char)) {
           textSize = 5.5;
         } else if (/\./.test(char)) {
@@ -100,7 +100,7 @@
     return target;
   };
 
-  // 测量字符串的像素宽度
+  // 测量字符串的像素宽度，在小程序中使用该方法时，传字体大小一般设置为设计稿定义的字体大小的1/2
   util.measureText = function(text, fontSize = 10) {
 
     text = String(text);
@@ -110,7 +110,7 @@
 
     text.forEach(function(item) {
       if (/[a-zA-Z]/.test(item)) {
-        width += 7;
+        width += 5;
       } else if (/[0-9]/.test(item)) {
         width += 5.5;
       } else if (/\./.test(item)) {
