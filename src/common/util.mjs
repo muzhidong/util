@@ -4,12 +4,14 @@
 
   // 获取随机颜色
   util.getRandomColor = function() {
-    var chs = "0123456789ABCDEF";
-    var col = "#";
-    for (var i = 0; i < 6; i++) {
-      col += chs[Math.random() * 16 | 0];
-    }
-    return col;
+    // var chs = "0123456789ABCDEF";
+    // var col = "#";
+    // for (var i = 0; i < 6; i++) {
+    //   col += chs[Math.random() * 16 | 0];
+    // }
+    // return col;
+    // 更优的随机算法，因为调用Math.random仅一次，认为在连续调用的随机概率效果更好
+    return `#${('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6)}`
   };
 
   // 指定范围内获取随机整数
