@@ -365,6 +365,59 @@
 
     </script>
 
+    <h1>画布工具</h1>
+    <img id="canvas2img" />
+    <script src="../build/canvas.min.js"></script>
+    <script>
+      const mcanvas = new MCanvas({
+        width: 200,
+        height: 200
+      });
+      mcanvas.drawPath({
+        paths: [ {
+          type: 'arc',
+          pos: {
+            x: 100,
+            y: 100,
+            radius: 25,
+            startAngle: 0,
+            endAngle: 360
+          },
+        },{
+          type: 'line',
+          pos: {
+            startX: 50,
+            startY: 127,
+            endX: 150,
+            endY: 127
+          }
+        }],
+        color: '#333',
+        size: 2
+      });
+      mcanvas.drawText({
+        text: '日落',
+        size: '20px',
+        color: 'red',
+        x: 100,
+        textAlign: 'center',
+        y: 150
+      });
+      mcanvas.drawText({
+        text: mcanvas.getTextWidth('日落', { size: '14px' }),
+        size: '14px',
+        color: 'blue',
+        textAlign: 'center',
+        x: 100,
+        y: 165      
+      });
+      const imgEl = document.querySelector('#canvas2img');
+      imgEl.src = mcanvas.toDataUrl();
+      imgEl.addEventListener('load', function(){
+        console.log('绘制成功');
+      })
+    </script>
+
   </body>
 
 </html>
