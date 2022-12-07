@@ -39,4 +39,22 @@
     return this;
   }
 
+  // 插入有序数组后仍有序
+  Array.prototype.insertSorted = function(value) {
+    let low = 0;
+    let high = this.length;
+    let mid;
+    while (low < high) {
+      // like (num / 2) but faster
+      mid = (low + high) >>> 1;
+      if (this[mid] < value) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+    this.splice(low, 0, value);
+    return this;
+  }
+
 })()
