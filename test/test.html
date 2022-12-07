@@ -418,6 +418,19 @@
       })
     </script>
 
+    <h1>文字一键复制</h1>
+    <textarea id="textarea-copy" style="width: 100%; height: 200px;"></textarea>
+    <button id="btn-copy">一键复制</button>
+    <script src="../build/copy.min.js"></script>
+    <script>
+      window.addEventListener('load', function(){
+        var btnCopyEl = document.querySelector('#btn-copy');
+        btnCopyEl.addEventListener('click', function(){
+          copy('#textarea-copy');
+        })
+      })
+    </script>
+
   </body>
 
 </html>
