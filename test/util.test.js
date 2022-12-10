@@ -1,6 +1,7 @@
 let {
   generateUUID,
   splitMultilineText,
+  getRandomNumber,
 } = require('../build/util.min.js');
 
 describe('工具类方法', function() {
@@ -64,5 +65,22 @@ describe('工具类方法', function() {
       "，这个谎言即将走向终点，然而18年前它是缘何而",
       "起，这个谎言的代价又是什么？",
     ]);
+  })
+});
+
+describe('工具类方法', () => {
+  
+  test('getRandomNumber', ()=>{
+    expect(()=>{getRandomNumber(100)}).toThrow(new Error('range参数必须是一个数组'));
+    expect(()=>{getRandomNumber(['a'])}).toThrow(new Error('range参数的第一个元素不是一个有效的数值'));
+    expect(()=>{getRandomNumber([50, 'b'])}).toThrow(new Error('range参数的第二个元素不是一个有效的数值'));
+    
+    const mockFn1 = jest.fn(() => getRandomNumber([50]))
+    mockFn1();
+    expect(mockFn1).toHaveReturned();
+    
+    const mockFn2 = jest.fn(() => getRandomNumber([50, 100]))
+    mockFn2();
+    expect(mockFn2).toHaveReturned();
   })
 });

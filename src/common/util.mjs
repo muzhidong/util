@@ -14,11 +14,31 @@
     return `#${('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6)}`
   };
 
-  // 指定范围内获取随机整数
-  util.getRandomNumber = function(value) {
+  var isValidNumber = function(value){
     var type = toString.call(value);
-    if (!(type === '[object Number]' || (type === '[object String]' && parseFloat(value) == value))) return null;
-    return parseInt(Math.random() * value, 10);
+    return type === '[object Number]' || (type === '[object String]' && parseFloat(value) == value);
+  }
+
+  // 指定范围内获取随机整数
+  util.getRandomNumber = function(range = [0, 1]) {
+    if(toString.call(range) !== '[object Array]'){
+      throw new Error('range参数必须是一个数组');
+    }
+
+    const [min, max] = range;
+    if(!isValidNumber(min)){
+      throw new Error('range参数的第一个元素不是一个有效的数值');
+    }
+
+    if(toString.call(max) === '[object Undefined]'){
+      return parseInt(Math.random() * min, 10);
+    }
+    
+    if(!isValidNumber(max)){
+      throw new Error('range参数的第二个元素不是一个有效的数值'); 
+    }
+
+    return parseInt(+min + Math.random() * (max - min), 10);
   };
 
   // 获取字符的16进制编码
