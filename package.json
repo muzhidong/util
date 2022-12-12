@@ -6,7 +6,7 @@
     "minify": "uglifyjs ./src/$FILE_DIR/$FILE_NAME.js -m -c -o ./build/$FILE_NAME.min.js",
     "minify-help": "uglifyjs -h",
     "build": "cross-env FILES=$FILES webpack",
-    "doc": "rm -rf doc && jsdoc -c ./jsdoc.config.json",
+    "docs": "rm -rf docs && jsdoc -c ./jsdoc.config.json",
     "jsdoc-help": "jsdoc -h",
     "test": "jest --config=jest.config.js",
     "test:watch": "jest --config=jest.config.js --watch"

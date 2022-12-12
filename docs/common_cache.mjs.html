@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>common/cache.mjs - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="browser.tool.html">tool</a></li><li><a href="DoubleQueueCache.html">DoubleQueueCache</a></li><li><a href="LRUCache.html">LRUCache</a></li></ul><h3>Modules</h3><ul><li><a href="module-tool_ajax.html">tool/ajax</a><ul class='methods'><li data-type='method'><a href="module-tool_ajax.html#~get">get</a></li><li data-type='method'><a href="module-tool_ajax.html#~post">post</a></li></ul></li><li><a href="module-tool_animation.html">tool/animation</a><ul class='methods'><li data-type='method'><a href="module-tool_animation.html#~hide">hide</a></li><li data-type='method'><a href="module-tool_animation.html#~show">show</a></li><li data-type='method'><a href="module-tool_animation.html#~slideDown">slideDown</a></li><li data-type='method'><a href="module-tool_animation.html#~slideToggle">slideToggle</a></li><li data-type='method'><a href="module-tool_animation.html#~slideUp">slideUp</a></li><li data-type='method'><a href="module-tool_animation.html#~toggle">toggle</a></li></ul></li><li><a href="module-tool_browser.html">tool/browser</a><ul class='methods'><li data-type='method'><a href="module-tool_browser.html#~getBrowserType">getBrowserType</a></li><li data-type='method'><a href="module-tool_browser.html#~getBrowserVersion">getBrowserVersion</a></li></ul></li><li><a href="module-tool_drag.html">tool/drag</a></li><li><a href="module-tool_fetch.html">tool/fetch</a><ul class='methods'><li data-type='method'><a href="module-tool_fetch.html#~get">get</a></li><li data-type='method'><a href="module-tool_fetch.html#~post">post</a></li></ul></li><li><a href="module-tool_html.html">tool/html</a><ul class='methods'><li data-type='method'><a href="module-tool_html.html#~attr">attr</a></li><li data-type='method'><a href="module-tool_html.html#~html">html</a></li><li data-type='method'><a href="module-tool_html.html#~text">text</a></li></ul></li><li><a href="module-tool_move.html">tool/move</a></li><li><a href="module-tool_other.html">tool/other</a><ul class='methods'><li data-type='method'><a href="module-tool_other.html#~tagUsage">tagUsage</a></li></ul></li><li><a href="module-tool_selector.html">tool/selector</a><ul class='methods'><li data-type='method'><a href="module-tool_selector.html#~children">children</a></li><li data-type='method'><a href="module-tool_selector.html#~eq">eq</a></li></ul></li><li><a href="module-tool_style.html">tool/style</a><ul class='methods'><li data-type='method'><a href="module-tool_style.html#~css">css</a></li><li data-type='method'><a href="module-tool_style.html#~setCompatibleStyle">setCompatibleStyle</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="browser.html">browser</a><ul class='methods'><li data-type='method'><a href="browser.html#.compress">compress</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">common/cache.mjs</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>(function() {
+
+  const generateUUID = function() {
+    // bits 12-15 of the time_hi_and_version field to 0010
+    // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0;
+      var v = c == 'x' ? r : (r &amp; 0x3 | 0x8);
+      return v.toString(16);
+    });
+  };
+
+  /**
+   * LRU缓存
+   * FIFO队列，当插入新数据时，插到尾部，并检查是否超过队列长度，若是则删除头部数据；当访问旧数据时，会将其移动到队列尾部
+   * 适合热点数据缓存，不适合偶发性、周期性批量操作
+   */
+  class LRUCache {
+    maxCount = 0;
+    lruQueue = [];
+
+    constructor(maxCount) {
+      this.maxCount = maxCount;
+    }
+
+    get(key) {
+      const idx = this.lruQueue.findIndex(cache => cache.key === key);
+      if (idx > -1) {
+        const arr = this.lruQueue.splice(idx, 1);
+        this.lruQueue.push(arr[0]);
+        return arr[0].value;
+      } else {
+        return null;
+      }
+    }
+
+    set(value) {
+      const key = generateUUID();
+      this.lruQueue.push({
+        key,
+        value,
+      })
+      if (this.lruQueue.length > this.maxCount) {
+        this.lruQueue.shift();
+      }
+      return key;
+    }
+
+    print(ignore) {
+      ignore &amp;&amp; console.log('LRU Cache:')
+      console.log(this.lruQueue.map(cache => cache));
+    }
+  }
+
+  /**
+   * 双队列缓存
+   * 1.当插入新数据时，插入FIFO队列，若数据在FIFO队列中一直未被访问，则最终按FIFO规则淘汰；
+   * 2.当数据在FIFO队列中被再次访问，则将数据移到LRU队列头部；
+   * 3.当数据在LRU队列中中被再次访问，则将数据迁移到LRU队列头部，若数据在LRU队列中一直未被访问，则最终按LRU规则淘汰；
+   * 根据使用频率和时间智能化淘汰，对批量突发图片的缓存污染有良好的防范能力。
+   */
+
+  // TODO:暂不支持根据缓存大小做限制
+  class DoubleQueueCache{
+    maxCount = 0;
+    queue = [];
+    LRUCache = null;
+    // 存储数据在FIFO、LRU两队列的映射，key是FIFO队列的uuid,value是LRU队列的uuid
+    hashMap = {};
+
+    constructor(maxCount, LRUMaxCount) {
+      this.maxCount = maxCount;
+      this.LRUCache = new LRUCache(LRUMaxCount);
+    }
+
+    get(key) { 
+      const idx = this.queue.findIndex(cache => cache.key === key);
+      if (idx === -1) {
+        const value = this.LRUCache.get(this.hashMap[key]);
+        if (value !== null) {
+          return value;
+        } else {
+          return null;
+        }
+      } else {
+        const cache = this.queue.splice(idx, 1);
+        const value = cache[0].value;
+        Object.assign(this.hashMap, {
+          [key]: this.LRUCache.set(value),
+        });
+        return value;
+      }
+    }
+
+    set(value) { 
+      const key = generateUUID();
+      this.queue.push({
+        key,
+        value,
+      })
+      if (this.queue.length > this.maxCount) {
+        this.queue.shift();
+      }
+      return key;
+    }
+
+    print() {
+      console.group('Double Queue Cache:')
+      console.log(this.queue.map(cache => cache.value));
+      this.LRUCache.print(true);
+      console.groupEnd();
+    }
+  }
+
+  const CACHE = {
+    LRUCache,
+    DoubleQueueCache
+  }
+
+  if (typeof define === 'function') {
+    define(function() {
+      return CACHE;
+    });
+  }
+  if (typeof module !== 'undefined' &amp;&amp; module.exports) {
+    module.exports = CACHE;
+  }
+  // 是否处于window环境
+  function isInWindow() {
+    return 'undefined' !== typeof window &amp;&amp; /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
+  }
+  if (isInWindow()) {
+    for (let key in CACHE) {
+      window[key] = CACHE[key];
+    }
+  }
+
+})()
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Mon Dec 12 2022 18:03:29 GMT+0800 (中国标准时间) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

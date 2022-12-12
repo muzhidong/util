@@ -5,7 +5,7 @@
   },
   "opts": {
     "encoding": "utf8",
-    "destination": "./doc/",
+    "destination": "./docs/",
     "recurse": true,
     "verbose": true,
     "template": "node_modules/docdash"
