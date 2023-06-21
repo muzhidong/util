@@ -2,22 +2,25 @@
 
   // 保证数组中所有元素值唯一，
   // 兼容了值为NaN和引用类型的情景
-  Array.prototype.unique = function() {
+  Array.prototype.unique = function(key = "") {
 
     var hash = {};
     var temp = [];
-    var val;
+    var k = key;
 
     for (var i = 0; i < this.length; i++) {
-  
-      if(toString.call(this[i]) === '[object Object]'){
-        val = JSON.stringify(this[i]);
-      }else{
-        val = this[i];
+      if (!k) {
+        if(toString.call(this[i]) === '[object Object]'){
+          k = JSON.stringify(this[i]);
+        }else{
+          k = this[i];
+        }  
+      } else {
+        k = this[i][key]
       }
-
-      if (!hash[val]) { 
-        hash[val] = true;
+  
+      if (!hash[k]) { 
+        hash[k] = true;
         temp.push(this[i]);
       }
 
