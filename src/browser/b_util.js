@@ -325,6 +325,15 @@
       // console.log(userAgent.substring(userAgent.indexOf(index)).match(regex));
       return (userAgent.substring(userAgent.indexOf(index)).match(regex))[0];
     },
+
+    /**
+     * @method isDarkMode
+     * @description 浏览器是否是暗黑模式
+     * @returns {boolean|string} true表示暗黑模式，false表示白天模式，-1表示未知
+     */
+    isDarkMode() {
+      return window.matchMedia? window.matchMedia("(prefers-color-scheme:dark)").matches : -1
+    }
   };
 
   /**
