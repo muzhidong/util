@@ -10,8 +10,11 @@
     //   col += chs[Math.random() * 16 | 0];
     // }
     // return col;
+    
     // 更优的随机算法，因为调用Math.random仅一次，认为在连续调用的随机概率效果更好
-    return `#${('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6)}`
+    // return `#${('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6)}`
+    // return `#${Math.floor(Math.random() * 0xffffff).toString(16)}`
+    return `#${(Math.random() * 0x1000000 << 0).toString(16)}`
   };
 
   var isValidNumber = function(value){
