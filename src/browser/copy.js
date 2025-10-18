@@ -39,7 +39,8 @@
     }
   }
 
-  context.copy = copy;
+  context.util = context.util || {}
+  context.util.copy = copy;
 
 })(window);
 

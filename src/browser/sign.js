@@ -265,6 +265,7 @@
 
   }
 
-  context.Sign = Sign;
+  context.util = context.util || {}
+  context.util.Sign = Sign;
 
 })(window);

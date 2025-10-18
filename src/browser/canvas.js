@@ -14,7 +14,7 @@
    * width   图片宽度
    * height  图片高度
    */
-  function MCanvas(option){
+  function MCanvas(option = {}) {
     const {
       width = 750,
       height = 1000,
@@ -155,6 +155,7 @@
     return canvasEle.toDataURL(type, level);
   }
 
-  context.MCanvas = MCanvas;
+  context.util = context.util || {}
+  context.util.MCanvas = MCanvas;
 
 })(window);

@@ -366,6 +366,7 @@
     },
   };
 
-  context.tool = new tool();
+  context.util = context.util || {}
+  context.util.tool = new tool();
 
 })(window);

@@ -51,6 +51,7 @@
 
   }
 
-  context.compress = compress;
+  context.util = context.util || {}
+  context.util.compress = compress;
 
 })(window);

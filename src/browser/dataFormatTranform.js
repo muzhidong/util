@@ -61,7 +61,11 @@
 
     var mime = arr[0].match(/:(.*?);/)[1];
 
-    var binaryStr = atob(arr[1]);
+    var base64 = arr[1];
+    // TODO: 这里的base64是否需要处理padding和替换字符？
+    // var padding = '='.repeat((4 - base64.length % 4) % 4);
+    // base64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
+    var binaryStr = atob(base64);
     var i = binaryStr.length;
     var u8arr = new Uint8Array(i);
     while (i--) {
@@ -80,8 +84,9 @@
 
   }
 
+  context.util = context.util || {}
   for (let key in dataConversion) {
-    context[key] = dataConversion[key];
+    context.util[key] = dataConversion[key];
   }
 
 })(window)

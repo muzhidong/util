@@ -49,6 +49,7 @@
     isDebug: IsDebug
   };
 
-  context.device = device;
+  context.util = context.util || {}
+  context.util.device = device;
 
 })(window);

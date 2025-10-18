@@ -10,8 +10,15 @@
     link.click();
     link.remove();
     URL.revokeObjectURL(link.href);
-  };
+  }
 
-  context.exportFile = exportFile;
+  const html2word = function (fileName, html) {
+    const blob = new Blob([html], { type: 'application/msword' });
+    exportFile(fileName, blob);
+  }
+
+  context.util = context.util || {}
+  context.util.exportFile = exportFile;
+  context.util.html2word = html2word;
 
 })(window);
