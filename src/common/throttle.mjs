@@ -28,7 +28,8 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
-    window.throttle = throttle;
+    window.util = window.util || {}
+    window.util.throttle = throttle;
   }
 
 })()

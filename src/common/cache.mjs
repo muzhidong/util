@@ -130,8 +130,9 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
+    window.util = window.util || {}
     for (let key in CACHE) {
-      window[key] = CACHE[key];
+      window.util[key] = CACHE[key];
     }
   }
 

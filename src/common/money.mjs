@@ -224,8 +224,9 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
+    window.util = window.util || {}
     for (let key in util) {
-      window[key] = money[key];
+      window.util[key] = money[key];
     }
   }
 })()

@@ -197,8 +197,9 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
+    window.util = window.util || {}
     for (let key in time) {
-      window[key] = time[key];
+      window.util[key] = time[key];
     }
   }
 

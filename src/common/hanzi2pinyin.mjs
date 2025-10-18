@@ -35,7 +35,8 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
-    window['hanzi2pinyin'] = hanzi2pinyin;
+    window.util = window.util || {}
+    window.util['hanzi2pinyin'] = hanzi2pinyin;
   }
 
 })();

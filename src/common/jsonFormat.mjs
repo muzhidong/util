@@ -131,7 +131,8 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
-    window.jsonFormat = jsonFormat;
+    window.util = window.util || {}
+    window.util.jsonFormat = jsonFormat;
   }
 
 })()

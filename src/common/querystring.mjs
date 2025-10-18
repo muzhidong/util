@@ -95,8 +95,9 @@
   }
   if (isInWindow()) {
     // 浏览器环境
-    window.parseSafeQueryString = parseSafeQueryString;
-    window.toSafeQueryString = toSafeQueryString;
+    window.util = window.util || {}
+    window.util.parseSafeQueryString = parseSafeQueryString;
+    window.util.toSafeQueryString = toSafeQueryString;
   }
 
 })()

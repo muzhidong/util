@@ -36,7 +36,8 @@
     return 'undefined' !== typeof window && /^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(window));
   }
   if (isInWindow()) {
-    window.debounce = debounce;
+    window.util = window.util || {}
+    window.util.debounce = debounce;
   }
 
 })()
