@@ -93,7 +93,7 @@ module.exports = (env, args) => {
     options = {
       entry: generateEntry(src),
       output: {
-        path: path.join(__dirname, 'build'),
+        path: path.join(__dirname, 'dist'),
         filename: '[name].min.js',
       }
     };
@@ -104,7 +104,7 @@ module.exports = (env, args) => {
         main: getEntryPath(src, files.split(',')),
       },
       output: {
-        path: path.join(__dirname, 'build'),
+        path: path.join(__dirname, 'dist'),
         filename: `${getDate()}-min.js`,
       }
     };

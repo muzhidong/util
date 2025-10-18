@@ -1,0 +1,21 @@
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    target-branch: "main"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      # 每天晚上9点检查更新
+      cronjob: "0 21 * * *"
+    groups:
+      prod-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"

@@ -1,7 +1,7 @@
 {
   "name": "js-util",
   "version": "1.0.0",
-  "description": "",
+  "description": "此库用于积累开发过程中有用的JS工具函数",
   "scripts": {
     "minify": "uglifyjs ./src/$FILE_DIR/$FILE_NAME.js -m -c -o ./build/$FILE_NAME.min.js",
     "minify-help": "uglifyjs -h",
