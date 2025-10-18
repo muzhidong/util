@@ -2,7 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    target-branch: "main"
+    target-branch: "master"
     directory: "/"
     schedule:
       interval: "cron"
