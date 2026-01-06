@@ -1,4 +1,4 @@
-(function(context) {
+(function (context) {
 
   if (!(/^\[object (?:Window|DOMWindow|global)\]$/.test(toString.call(context)))) return;
 
@@ -6,24 +6,25 @@
   const NA = WIN.navigator;
   const UA = NA.userAgent.toLowerCase();
 
-  function test(needle) {
-    return needle.test(UA);
+  function match(regexp) {
+    return regexp.test(UA);
   }
 
-  const isAndroid = test(/android/) || /linux/i.test(NA.platform + "");
-  const isIPad = !isAndroid && test(/ipad/);
-  const isiPhone = !isAndroid && test(/ipod|iphone/);
+  const isAndroid = match(/android/) || /linux/i.test(NA.platform);
+  const isIPad = !isAndroid && match(/ipad/);
+  const isiPhone = !isAndroid && match(/ipod|iphone/);
   const isiOS = isiPhone || isiPad;
 
-  const isMobile = test(/applewebkit.*mobile.*/);
+  const isMobile = match(/applewebkit.*mobile.*/);
   const isPC = !isAndroid && !isiOS;
 
   const isTouch = "ontouchend" in WIN;
 
-  const isWeixin = test(/micromessenger/);
-  const isXiaoMi = isAndroid && test(/mi\s+/);
-  const isUC = test(/ucbrowser/);
+  const isWeixin = match(/micromessenger/);
+  const isXiaoMi = isAndroid && match(/mi\s+/);
+  const isUC = match(/ucbrowser/);
   const isChrome = !!WIN["chrome"];
+  const isSafari = UA.indexOf("chrome") === -1 && match(/webkit|khtml/);
 
   const device = {
     isAndroid,
@@ -40,6 +41,7 @@
     isXiaoMi,
     isUC,
     isChrome,
+    isSafari
   };
 
   context.util = context.util || {}
